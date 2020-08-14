@@ -1,6 +1,6 @@
 {
   "name": "@northscaler/rbac",
-  "version": "1.0.0-pre.2",
+  "version": "1.0.0-pre.3",
   "description": "Role-based access control for arbitrary securables",
   "homepage": "https://gitlab.com/northscaler-public/rbac#readme",
   "repository": {
