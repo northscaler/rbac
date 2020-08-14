@@ -1,0 +1,127 @@
+{
+  "name": "@northscaler/rbac",
+  "version": "1.0.0-pre.0",
+  "description": "Role-based access control for arbitrary securables",
+  "homepage": "https://gitlab.com/northscaler-public/rbac#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/northscaler-public/rbac.git"
+  },
+  "keywords": [
+    "security",
+    "access control",
+    "authorization",
+    "rbac",
+    "role",
+    "roles",
+    "role-based access control"
+  ],
+  "engines": {
+    "node": ">=8.17.0"
+  },
+  "scripts": {
+    "build": "npm install && npm test",
+    "transpile": "run-s transpile-main transpile-test",
+    "clean": "rimraf dist docs coverage .nyc_output",
+    "prenuke": "npm run clean",
+    "nuke": "rimraf node_modules",
+    "transpile-main": "babel --delete-dir-on-start --verbose --out-dir dist/main --copy-files src/main",
+    "transpile-test": "babel --delete-dir-on-start --verbose --out-dir dist/test --copy-files src/test",
+    "unit-integration": "nyc --check-coverage -x 'dist/test' --exclude-after-remap false mocha 'dist/test/unit/**/*.spec.js' 'dist/test/integration/**/*.spec.js'",
+    "postunit-integration": "run-s report",
+    "integration": "nyc -x 'dist/test' --exclude-after-remap false mocha 'dist/test/integration/**/*.spec.js'",
+    "postintegration": "run-s report",
+    "i": "mocha 'src/test/integration/**/*.spec.js'",
+    "unit": "nyc -x 'dist/test' --exclude-after-remap false mocha 'dist/test/unit/**/*.spec.js'",
+    "postunit": "run-s report",
+    "u": "mocha 'src/test/unit/**/*.spec.js'",
+    "test": "run-s transpile unit-integration lint",
+    "report": "nyc report --reporter=html",
+    "cov": "open coverage/index.html",
+    "lint": "standard --verbose 'src/**/*.js'",
+    "format": "standard --fix 'src/**/*.js'",
+    "make-distribution": "run-s transpile doc lic",
+    "doc": "jsdoc --verbose -d docs -r -c jsdoc.json -R README.md src/main",
+    "lic": "node lic.js > LICENSE"
+  },
+  "files": [
+    "dist/",
+    "docs/",
+    "src/",
+    "index.js"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@babel/polyfill": "7.10.4",
+    "@northscaler/error-support": "3.3.0-rc.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.10.5",
+    "@babel/core": "7.11.1",
+    "@babel/plugin-proposal-class-properties": "7.10.4",
+    "@babel/plugin-proposal-decorators": "7.10.5",
+    "@babel/plugin-proposal-optional-chaining": "7.11.0",
+    "@babel/plugin-proposal-throw-expressions": "7.10.4",
+    "@babel/preset-env": "7.11.0",
+    "@babel/register": "7.10.5",
+    "acorn": "8.0.1",
+    "babel-eslint": "10.1.0",
+    "chai": "4.2.0",
+    "config-cev-generator": "0.1.6",
+    "copyfiles": "2.3.0",
+    "dirty-chai": "2.0.1",
+    "jsdoc": "3.6.5",
+    "lodash.template": "4.5.0",
+    "mocha": "7.2.0",
+    "npm-run-all": "4.1.5",
+    "nyc": "15.1.0",
+    "standard": "14.3.4",
+    "uuid": "8.3.0"
+  },
+  "babel": {
+    "sourceMaps": "inline",
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": true
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-proposal-optional-chaining",
+        {
+          "loose": false
+        }
+      ],
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ],
+      [
+        "@babel/plugin-proposal-throw-expressions"
+      ],
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ]
+    ]
+  },
+  "standard": {
+    "parser": "babel-eslint"
+  },
+  "mocha": {
+    "colors": true,
+    "require": "@babel/register"
+  }
+}
