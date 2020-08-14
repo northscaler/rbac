@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "7.10.4",
-    "@northscaler/error-support": "3.3.0-rc.2"
+    "@northscaler/error-support": "3.3.0-rc.3"
   },
   "devDependencies": {
     "@babel/cli": "7.10.5",
