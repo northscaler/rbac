@@ -54,6 +54,9 @@ Users of this library will almost always use `permits`; `expicitlyDenies` is int
 ## Example
 Let's take `MethodAccessControlRepository` as an example.
 
+> NOTE: this is a low-tech example.
+> For a high-tech usage of this library that leverages JavaScript decorators, see the test `should work as intended in an app` in `src/test/MethodAccessControlRepository.spec.js`.
+
 First, declare your policy.
 We want `Administrator`s to be able to do anything, `Teller`s & `Manager`s to be able to open `Account`s, but only `Manager`s can close high-value `Account`s.
 ```javascript

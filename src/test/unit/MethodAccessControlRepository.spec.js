@@ -277,6 +277,7 @@ describe('unit tests of MethodAccessControlRepository', () => {
 
     const rbac = new MethodAccessControlRepository(policy)
 
+    // a function that adapts this application to the library
     function checkSecurity ({ roles, clazz, method, data }) {
       if (!rbac.permits({ role: roles, securable: { class: clazz, method }, data })) {
         throw new AuthorizationError({ info: { roles, class: clazz, method, data } })
@@ -285,7 +286,7 @@ describe('unit tests of MethodAccessControlRepository', () => {
 
     let getCurrentCallerRoles // magic function that gets the roles of the current caller from some context
 
-    // first, use manually written, inline checks in a class
+    // first, use manually written, inline checks in a class (low-tech solution)
 
     class AccountWithInlineChecks {
       static open ({ id, firstName, lastName }) {
@@ -319,7 +320,7 @@ describe('unit tests of MethodAccessControlRepository', () => {
       }
     }
 
-    // next, use decoraters as an AOP-based solution
+    // next, use decorators to enforce security (high-tech solution)
 
     // for simplicity, this decorator assumes only regular methods, not property get/set methods, are decorated
     const secured = function (clazz, methodName, descriptor) {
@@ -327,6 +328,7 @@ describe('unit tests of MethodAccessControlRepository', () => {
 
       descriptor.value = function (...args) {
         checkSecurity({ roles: getCurrentCallerRoles(), clazz: clazz.name, method: methodName, data: this })
+        // if checkSecurity doesn't throw, then we'll delegate to the original, decorated method
         return originalMethod.apply(this, args)
       }
 
